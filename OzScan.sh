@@ -127,10 +127,15 @@ echo "If you face any issues or have any issues please DM on Twitter @0zk3y or c
 echo "====================================================================================================================================================="
 exit 1
 elif [ "$option" -eq "4" ]; then
-echo "Running Scan on" $urlname
-katana https://$urlname/ >> endpoints.txt
-echo "Katana's output is saved in: endpoints.txt"
+echo "Running Scan on:" $urlname
 sleep 2
+subfinder -d $urlname >> subdomains.txt; sleep 2
+echo "Scanning Completed, results are saved as below in directory named" $urlname
+sleep 2
+httpx -l subdomains.txt >> domains.txt; sleep 2
+echo "HTTPX's output is saved in: domains.txt"
+sleep 2
+katana -list domains.txt >> endpoints.txt; sleep 2
 echo "Running waybackurls:"
 touch all_urls.txt
 chmod 660 all_urls.txt
